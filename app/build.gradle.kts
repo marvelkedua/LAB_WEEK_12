@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    kotlin("kapt")
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -38,21 +38,34 @@ android {
 
 dependencies {
 
-    implementation(libs.androidx.recyclerview)
-    implementation(libs.glide)
-    implementation(libs.retrofit)
-    implementation(libs.converter.moshi)
-    implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.kotlinx.coroutines.android)
-    kapt(libs.moshi.kotlin.codegen)
-    implementation(libs.androidx.lifecycle.livedata.ktx)
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
+    // UI & Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.glide)
+
+    // Lifecycle
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+
+    // Networking (Retrofit & Moshi)
+    implementation(libs.retrofit)
+    implementation(libs.converter.moshi) // Converter Retrofit-Moshi
+    implementation(libs.moshi.kotlin)    // Library utama Moshi
+
+    // Code Generator untuk Moshi (Penyebab error sebelumnya)
+    // Sekarang error hilang karena plugin ksp sudah di-apply di atas
+    ksp(libs.moshi.kotlin.codegen)
+
+    // Coroutines
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
+
+    // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
