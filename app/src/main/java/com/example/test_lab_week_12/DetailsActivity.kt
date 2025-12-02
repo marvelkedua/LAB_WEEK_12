@@ -18,7 +18,7 @@ class DetailsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_details)
+        setContentView(R.layout.activity_details) // Pastikan layout XML bernama activity_details.xml
 
         val titleText: TextView = findViewById(R.id.title_text)
         val releaseText: TextView = findViewById(R.id.release_text)
@@ -27,18 +27,20 @@ class DetailsActivity : AppCompatActivity() {
 
         val extras = intent.extras
 
-        titleText.text = extras?.getString(EXTRA_TITLE).orEmpty()
-        releaseText.text = extras?.getString(EXTRA_RELEASE).orEmpty().take(4)
+        if (extras != null) {
+            titleText.text = extras.getString(EXTRA_TITLE).orEmpty()
+            releaseText.text = extras.getString(EXTRA_RELEASE).orEmpty().take(4)
 
-        overviewText.text =
-            getString(R.string.movie_overview, extras?.getString(EXTRA_OVERVIEW).orEmpty())
+            // Pastikan string resource 'movie_overview' ada di strings.xml
+            // Jika merah, ganti sementara dengan: overviewText.text = extras.getString(EXTRA_OVERVIEW)
+            overviewText.text = getString(R.string.movie_overview, extras.getString(EXTRA_OVERVIEW).orEmpty())
 
-        val posterPath = extras?.getString(EXTRA_POSTER).orEmpty()
-        Glide.with(this@DetailsActivity)
-            .load("$IMAGE_URL$posterPath")
-            .placeholder(R.mipmap.ic_launcher)
-            .fitCenter()
-            .into(poster)
-
+            val posterPath = extras.getString(EXTRA_POSTER).orEmpty()
+            Glide.with(this@DetailsActivity)
+                .load("$IMAGE_URL$posterPath")
+                .placeholder(R.mipmap.ic_launcher)
+                .fitCenter()
+                .into(poster)
+        }
     }
 }
